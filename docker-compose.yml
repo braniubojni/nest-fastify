@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  # web:
+  #   image: node:14
+  #   working_dir: /app
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     NODE_ENV: production
+  #   volumes:
+  #     - ./app:/app
+  #   command: ["npm", "start"]
+  #   restart: always
+
+  db:
+    image: postgres:13
+    ports:
+      - "54322:5432"
+    environment:
+      POSTGRES_DB: fastify-nest
+      POSTGRES_USER: braniubojni
+      POSTGRES_PASSWORD: wxn6rQ4JbD@2A9GLv%Ve3*e9^rgus
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  db-data:

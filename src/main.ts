@@ -1,12 +1,11 @@
+import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
-import { Logger } from '@nestjs/common';
-import { AllExceptionsFilter } from './common/filters/all-exception.filter';
-import { HttpAdapterHost } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -17,7 +16,17 @@ async function bootstrap() {
   );
   const PORT = process.env.PORT ?? 5005;
 
-  // Middlewares
+  const config = new DocumentBuilder()
+    .setTitle('Fastify w/ Nestjs Project')
+    .setDescription('Rest API Documentation')
+    .setVersion('1.0.0')
+    .addTag('braniubojni')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('/api/docs', app, document);
+
+  /** Middlewares */
   // No need 4 this 4 now. Nest already handling runtime issues related to controller request.
   // const { httpAdapter } = app.get(HttpAdapterHost);
   // app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));

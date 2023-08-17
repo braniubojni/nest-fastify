@@ -16,5 +16,6 @@ import { UtilsModule } from 'src/utils/utils.module';
     RolesModule,
     UtilsModule,
   ],
+  exports: [UsersService],
 })
 export class UsersModule {}

@@ -19,12 +19,21 @@ export class UsersService {
       this.roleService.getByValue('USER'),
     ])) as [User, Role];
     await user.$set('roles', [role.id]);
+    user.roles = [role];
 
     return user;
   }
 
   async getAll() {
-    const users = await this.userRepo.findAll();
+    const users = await this.userRepo.findAll({ include: { all: true } });
     return users;
+  }
+
+  async getByEmail(email: string) {
+    const user = await this.userRepo.findOne({
+      where: { email },
+      include: { all: true },
+    });
+    return user;
   }
 }

@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ALREADY_EXISTS } from 'src/common/constants/functions';
 import { CreateUserDto } from 'src/users/dto/create-user.to';
@@ -13,7 +18,22 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async login(userDto: CreateUserDto) {}
+  private async validateUser(userDto: CreateUserDto): Promise<User> {
+    const user = await this.userService.getByEmail(userDto.email);
+
+    const isPassEqual = user
+      ? await bcrypt.compare(userDto.password, user.password)
+      : null;
+    if (isPassEqual) return user;
+
+    throw new UnauthorizedException({ message: 'Incorrect credentials' });
+  }
+
+  async login(userDto: CreateUserDto) {
+    const user = await this.validateUser(userDto);
+
+    return this.generateToken(user);
+  }
 
   async registration(userDto: CreateUserDto) {
     const userExist = await this.userService.getByEmail(userDto.email);

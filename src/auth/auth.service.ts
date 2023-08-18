@@ -5,11 +5,12 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { ALREADY_EXISTS } from 'src/common/constants/functions';
-import { CreateUserDto } from 'src/users/dto/create-user.to';
-import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcryptjs';
+import { ALREADY_EXISTS } from 'src/common/constants/functions';
+import { WRONG_CREDENTIALS } from 'src/common/constants/variables';
+import { CreateUserDto } from 'src/users/dto/create-user.to';
 import { User } from 'src/users/users.model';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
@@ -26,7 +27,7 @@ export class AuthService {
       : null;
     if (isPassEqual) return user;
 
-    throw new UnauthorizedException({ message: 'Incorrect credentials' });
+    throw new UnauthorizedException({ message: WRONG_CREDENTIALS });
   }
 
   async login(userDto: CreateUserDto) {

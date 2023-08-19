@@ -7,6 +7,7 @@ import {
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from './common/pipes/validation.pipe';
+import fastifyMultipart = require('@fastify/multipart');
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -14,6 +15,9 @@ async function bootstrap() {
     new FastifyAdapter({
       // logger: true
     }),
+    {
+      rawBody: true,
+    },
   );
   const PORT = process.env.PORT ?? 5005;
 
@@ -32,6 +36,13 @@ async function bootstrap() {
   // const { httpAdapter } = app.get(HttpAdapterHost);
   // app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
   app.useGlobalPipes(new ValidationPipe());
+
+  // Multypart
+  app.register(fastifyMultipart, {
+    addToBody: true,
+    attachFieldsToBody: false,
+    limits: { fileSize: 1_000_000_000 }, // 1GB
+  });
   await app.listen(PORT, () => Logger.debug(`Server at ${PORT}`));
 }
 bootstrap();

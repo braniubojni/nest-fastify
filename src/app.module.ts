@@ -8,6 +8,11 @@ import { Role } from './roles/roles.model';
 import { UserRoles } from './roles/user-roles.model';
 import { UtilsModule } from './utils/utils.module';
 import { AuthModule } from './auth/auth.module';
+import { PostsModule } from './posts/posts.module';
+import { Post } from './posts/posts.model';
+import { FilesModule } from './files/files.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -30,7 +35,7 @@ import { AuthModule } from './auth/auth.module';
           username,
           password,
           database,
-          models: [User, Role, UserRoles],
+          models: [User, Role, UserRoles, Post],
           autoLoadModels: true,
         };
       },
@@ -39,6 +44,11 @@ import { AuthModule } from './auth/auth.module';
     RolesModule,
     UtilsModule,
     AuthModule,
+    PostsModule,
+    FilesModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'static'),
+    }),
   ],
   controllers: [],
   providers: [],

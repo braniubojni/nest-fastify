@@ -1,4 +1,8 @@
+import { BusboyFileStream } from '@fastify/busboy';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { createWriteStream } from 'node:fs';
+import { Readable, pipeline } from 'node:stream';
+import * as util from 'node:util';
 
 @Injectable()
 export class UtilsService {
@@ -22,5 +26,10 @@ export class UtilsService {
           fulf.status === 'fulfilled',
       )
       .map(({ value }) => value as any);
+  }
+
+  async pipeline(file: BusboyFileStream | Readable, path: string) {
+    const pump = util.promisify(pipeline);
+    return pump(file, createWriteStream(path));
   }
 }

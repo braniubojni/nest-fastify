@@ -5,6 +5,8 @@ const ROLE_OR_USER_NOT_FOUND = 'User or role was not found';
 const SHOULD_BE_STRING = 'Should be string';
 const SHOULD_BE_NUMBER = 'Should be number';
 const REQUIRED_LEN = 'Length should be bigger than 8 and lower than 30';
+const IMG_MIME = new Set(['png', 'gif', 'jpeg', 'webp']);
+const WRITE_FILE_ERR = 'Error during file upload';
 
 export {
   UNAUTH,
@@ -14,4 +16,6 @@ export {
   SHOULD_BE_STRING,
   SHOULD_BE_NUMBER,
   REQUIRED_LEN,
+  IMG_MIME,
+  WRITE_FILE_ERR,
 };

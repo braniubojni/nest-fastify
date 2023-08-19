@@ -8,7 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { ALREADY_EXISTS } from 'src/common/constants/functions';
 import { WRONG_CREDENTIALS } from 'src/common/constants/variables';
-import { CreateUserDto } from 'src/users/dto/create-user.to';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { User } from 'src/users/users.model';
 import { UsersService } from 'src/users/users.service';
 

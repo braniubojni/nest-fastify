@@ -6,13 +6,14 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.to';
-import { UsersService } from './users.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { User } from './users.model';
-import { JwtAuthGuard } from 'src/auth/auth-jwt.guard';
 import { Roles } from 'src/auth/roles-auth.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
+import { CreateUserDto } from './dto/create-user.dto';
+import { User } from './users.model';
+import { UsersService } from './users.service';
+import { AssignRoleDto } from './dto/assign-role.dto';
+import { BanUserDto } from './dto/ban-user.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -34,5 +35,27 @@ export class UsersController {
   @UseGuards(RolesGuard)
   getAll() {
     return this.userService.getAll();
+  }
+
+  // Only admins are able to assign the role
+  @ApiOperation({ summary: 'Assign the role' })
+  @ApiResponse({ status: HttpStatus.OK })
+  @Post('/role')
+  // @UseGuards(JwtAuthGuard) // Checking for user login
+  @Roles('ADMIN')
+  @UseGuards(RolesGuard)
+  assignRole(@Body() roleDto: AssignRoleDto) {
+    return this.userService.assignRole(roleDto);
+  }
+
+  // Only admins are able to assign the role
+  @ApiOperation({ summary: 'Ban user' })
+  @ApiResponse({ status: HttpStatus.OK })
+  @Post('/ban')
+  // @UseGuards(JwtAuthGuard) // Checking for user login
+  @Roles('ADMIN')
+  @UseGuards(RolesGuard)
+  banUser(@Body() banDto: BanUserDto) {
+    return this.userService.ban(banDto);
   }
 }

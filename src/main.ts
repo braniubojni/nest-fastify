@@ -39,7 +39,7 @@ async function bootstrap() {
 
   // Multypart
   app.register(fastifyMultipart, {
-    addToBody: true,
+    addToBody: false,
     attachFieldsToBody: false,
     limits: { fileSize: 1_000_000_000 }, // 1GB
   });

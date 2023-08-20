@@ -37,6 +37,7 @@
     "class-validator": "^0.14.0",
     "cross-env": "^7.0.3",
     "fastify-swagger": "^5.2.0",
+    "lodash": "^4.17.21",
     "pg": "^8.11.2",
     "pg-hstore": "^2.3.4",
     "reflect-metadata": "^0.1.13",

@@ -3,4 +3,6 @@ export const APP_MODULES = {
   _ROLE: 'Role',
   USER: 'user',
   ROLE: 'role',
+  POST: 'post',
+  _POST: 'Post',
 };

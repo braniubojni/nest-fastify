@@ -4,8 +4,9 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
-import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { join } from 'node:path';
+import { AppModule } from './app.module';
 import { ValidationPipe } from './common/pipes/validation.pipe';
 import fastifyMultipart = require('@fastify/multipart');
 
@@ -13,7 +14,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter({
-      // logger: true
+      logger: true,
     }),
     {
       rawBody: true,
@@ -32,10 +33,15 @@ async function bootstrap() {
   SwaggerModule.setup('/api/docs', app, document);
 
   /** Middlewares */
+
   // No need 4 this 4 now. Nest already handling runtime issues related to controller request.
   // const { httpAdapter } = app.get(HttpAdapterHost);
   // app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
   app.useGlobalPipes(new ValidationPipe());
+  app.useStaticAssets({
+    root: join(__dirname, '..', 'dist', 'static'),
+    prefix: '/static/',
+  });
 
   // Multypart
   app.register(fastifyMultipart, {

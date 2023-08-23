@@ -1,29 +1,35 @@
 version: '3.8'
 
 services:
-  # web:
-  #   image: node:14
-  #   working_dir: /app
-  #   ports:
-  #     - "3000:3000"
-  #   environment:
-  #     NODE_ENV: production
-  #   volumes:
-  #     - ./app:/app
-  #   command: ["npm", "start"]
-  #   restart: always
+  main:
+    container_name: main
+    build:
+      context: .
+    env_file:
+      - .env.development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - 7007:7007
+      - 9229:9229
+    command: npm run start:dev
+    depends_on:
+      - postgres
+    restart: always
 
-  db:
+  postgres:
+    container_name: postgres
     image: postgres:13
     ports:
-      - "54322:5432"
+      - 5432:5432
+    env_file:
+      - .env.development
     environment:
-      POSTGRES_DB: fastify-nest
-      POSTGRES_USER: braniubojni
-      POSTGRES_PASSWORD: wxn6rQ4JbD@2A9GLv%Ve3*e9^rgus
+      PG_DATA: /var/lib/postgresql/data
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - dbdata:/var/lib/postgresql/data
     restart: always
 
 volumes:
-  db-data:
+  dbdata:

@@ -20,11 +20,11 @@ import { UtilsModule } from './utils/utils.module';
     SequelizeModule.forRootAsync({
       useFactory: async () => {
         const {
-          DB_HOST: host,
-          DB_PORT: port,
-          DB_USER: username,
-          DB_PASS: password,
-          DB_NAME: database,
+          POSTGRES_HOST: host,
+          POSTGRES_PORT: port,
+          POSTGRES_USER: username,
+          POSTGRES_PASSWORD: password,
+          POSTGRES_DB: database,
         } = process.env;
         return {
           dialect: 'postgres',
